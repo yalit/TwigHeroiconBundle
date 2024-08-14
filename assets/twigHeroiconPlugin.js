@@ -107,7 +107,7 @@ class TwigHeroiconPlugin {
       displayType = displayType !== "" ? displayType : this.importDisplayType;
       size = size !== "" ? size : this.importSize;
       heroiconsData.push({
-        id: "-".join([name, displayType, size]),
+        id: [name, displayType, size].join("-"),
         name,
         displayType,
         size,

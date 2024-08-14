@@ -106,12 +106,12 @@ class TwigHeroiconPlugin {
 
       displayType = displayType !== "" ? displayType : this.importDisplayType;
       size = size !== "" ? size : this.importSize;
-      heroiconsData = {
+      heroiconsData.push({
         id: "-".join[(name, displayType, size)],
         name,
         displayType,
         size,
-      };
+      });
     });
 
     return heroiconsData;

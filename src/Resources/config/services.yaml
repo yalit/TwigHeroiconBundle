@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    bind:
+      $twigHeroiconPublicDir: "%kernel.project_dir%/public"
+
+  Yalit\TwigHeroiconBundle\Twig\TwigHeroiconExtension:
+    tags: ["twig.extension"]

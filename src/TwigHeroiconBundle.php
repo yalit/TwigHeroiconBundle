@@ -1,13 +1,15 @@
 <?php
 
-namespace TwigHeroiconBundle;
+namespace Yalit\TwigHeroiconBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
-class TwigHeroiconBundle extends Bundle
+class TwigHeroiconBundle extends AbstractBundle
 {
-    public function getPath(): string
+    public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        return dirname(__DIR__);
+        $container->import('./Resources/config/services.yaml');
     }
 }

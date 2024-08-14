@@ -55,7 +55,7 @@ class TwigHeroiconPlugin {
                         for (const heroicon of heroicons) {
                             const [name, displayType, size, heroiconClass] = heroicon[1].replace(/'/g, '').split(',').map(e => e.trim())
 
-                            let svgContent = fs.readFileSync(getHeroiconFilePath(name, size, displayType), 'utf-8')
+                            let svgContent = fs.readFileSync(getHeroiconFilePath(name, size !== '' ? size : undefined, displayType !== '' ? displayType : undefined), 'utf-8')
                             if (heroiconClass && heroiconClass !== '') {
                                 svgContent = svgContent.replace('<svg', `<svg class="${heroiconClass}"`)
                             }

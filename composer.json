@@ -1,0 +1,11 @@
+{
+    "name": "yalit/twig-heroicon-bundle",
+    "description": "A simple bundle to load Tailwind Heroicon icons from Twig template",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Yalit\\TwigHeroiconBundle\\": "src/"
+        }
+    }
+}

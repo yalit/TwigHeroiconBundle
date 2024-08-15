@@ -4,12 +4,17 @@ namespace Yalit\TwigHeroiconBundle\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use Yalit\TwigHeroiconBundle\Services\Enum\HeroiconSize;
+use Yalit\TwigHeroiconBundle\Services\Enum\HeroiconType;
 use Yalit\TwigHeroiconBundle\Services\HeroiconGetterInterface;
 
 class TwigHeroiconExtension extends AbstractExtension
 {
     public function __construct(
-        private readonly HeroiconGetterInterface $heroiconGetter
+        private readonly HeroiconGetterInterface $heroiconGetter,
+        private readonly bool $withWebpack = true,
+        private readonly string $defaultDisplayType = 'outline',
+        private readonly string $defaultSize = '24'
     ) {}
 
     /**
@@ -24,6 +29,9 @@ class TwigHeroiconExtension extends AbstractExtension
 
     public function getHeroicon(string $name, string $type = 'outline', string $size = '24', string $className = ''): string
     {
-        return $this->heroiconGetter->getHeroicon($name, $type, $size, $className);
+        $heroiconType = $type === '' ? HeroiconType::from($this->defaultDisplayType) : HeroiconType::from($type);
+        $heroiconSize = $size === '' ? HeroiconSize::from($this->defaultSize) : HeroiconSize::from($size);
+
+        return $this->heroiconGetter->getHeroicon($name, $heroiconType, $heroiconSize, $className);
     }
 }

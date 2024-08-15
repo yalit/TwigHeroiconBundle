@@ -2,7 +2,7 @@
 
 namespace Yalit\TwigHeroiconBundle\Services\Enum;
 
-enum HeroiconSizes: string
+enum HeroiconSize: string
 {
     case SIXTEEN = '16';
     case TWENTY = '20';

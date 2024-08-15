@@ -2,15 +2,13 @@
 
 namespace Yalit\TwigHeroiconBundle\Tests\Unit\Services;
 
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Yalit\TwigHeroiconBundle\Services\Enum\HeroiconSize;
+use Yalit\TwigHeroiconBundle\Services\Enum\HeroiconType;
 use Yalit\TwigHeroiconBundle\Services\WebpackHeroiconGetter;
 
 class WebpackHeroiconGetterTest extends TestCase
 {
-    #[DataProvider(methodName: 'getTypeAndSizes')]
-    #[Test]
     /**
      * @test
      * @dataProvider getTypeAndSizes
@@ -19,15 +17,13 @@ class WebpackHeroiconGetterTest extends TestCase
     {
         $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public');
 
-        $svg = $heroiconGetter->getHeroicon('test', $type, $size, '');
+        $svg = $heroiconGetter->getHeroicon('test', HeroiconType::from($type), HeroiconSize::from($size), '');
         $this->assertStringContainsString(sprintf('viewBox="0 0 %s %s"', $size, $size), $svg);
 
         $typeStringSpecific = $type === 'outline' ? 'stroke-linecap="round"' : 'fill-rule="evenodd"';
         $this->assertStringContainsString($typeStringSpecific, $svg);
     }
 
-    #[DataProvider(methodName: 'getTypeAndSizes')]
-    #[Test]
     /**
      * @test
      * @dataProvider getTypeAndSizes
@@ -38,7 +34,7 @@ class WebpackHeroiconGetterTest extends TestCase
 
         $className = 'icon h-4 w-4 rounded stroke-blue-800';
 
-        $svg = $heroiconGetter->getHeroicon('test', $type, $size, $className);
+        $svg = $heroiconGetter->getHeroicon('test', HeroiconType::from($type), HeroiconSize::from($size), $className);
         $this->assertStringContainsString(sprintf('viewBox="0 0 %s %s"', $size, $size), $svg);
 
         $typeStringSpecific = $type === 'outline' ? 'stroke-linecap="round"' : 'fill-rule="evenodd"';

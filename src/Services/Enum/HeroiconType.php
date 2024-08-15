@@ -2,7 +2,7 @@
 
 namespace Yalit\TwigHeroiconBundle\Services\Enum;
 
-enum HeroiconTypes: string
+enum HeroiconType: string
 {
     case OUTLINE = 'outline';
     case SOLID = 'solid';

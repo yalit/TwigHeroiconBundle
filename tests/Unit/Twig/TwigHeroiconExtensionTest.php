@@ -2,29 +2,26 @@
 
 namespace Yalit\TwigHeroiconBundle\Tests\Unit\Twig;
 
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Yalit\TwigHeroiconBundle\Services\Enum\HeroiconSizes;
+use Yalit\TwigHeroiconBundle\Services\Enum\HeroiconSize;
 use Yalit\TwigHeroiconBundle\Services\WebpackHeroiconGetter;
 use Yalit\TwigHeroiconBundle\Twig\TwigHeroiconExtension;
 
 class TwigHeroiconExtensionTest extends TestCase
 {
-    #[Test]
-    /** @test */
+    /**
+     * @test
+     */
     public function successfulGetHeroiconWithOnlyName(): void
     {
         $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public');
         $twigExtension = new TwigHeroiconExtension($heroiconGetter);
 
         $svg = $twigExtension->getHeroicon('test');
-        $this->assertStringContainsString(sprintf('viewBox="0 0 %s %s"', HeroiconSizes::TWENTY_FOUR->value, HeroiconSizes::TWENTY_FOUR->value), $svg);
+        $this->assertStringContainsString(sprintf('viewBox="0 0 %s %s"', HeroiconSize::TWENTY_FOUR->value, HeroiconSize::TWENTY_FOUR->value), $svg);
         $this->assertStringContainsString('stroke-linecap="round"', $svg);  // default is outline
     }
 
-    #[DataProvider(methodName: 'getTypeAndSizes')]
-    #[Test]
     /**
      * @test
      * @dataProvider getTypeAndSizes
@@ -35,14 +32,12 @@ class TwigHeroiconExtensionTest extends TestCase
         $twigExtension = new TwigHeroiconExtension($heroiconGetter);
 
         $svg = $twigExtension->getHeroicon('test', $type);
-        $this->assertStringContainsString(sprintf('viewBox="0 0 %s %s"', HeroiconSizes::TWENTY_FOUR->value, HeroiconSizes::TWENTY_FOUR->value), $svg);
+        $this->assertStringContainsString(sprintf('viewBox="0 0 %s %s"', HeroiconSize::TWENTY_FOUR->value, HeroiconSize::TWENTY_FOUR->value), $svg);
 
         $typeStringSpecific = $type === 'outline' ? 'stroke-linecap="round"' : 'fill-rule="evenodd"';
         $this->assertStringContainsString($typeStringSpecific, $svg);
     }
 
-    #[DataProvider(methodName: 'getTypeAndSizes')]
-    #[Test]
     /**
      * @test
      * @dataProvider getTypeAndSizes
@@ -59,8 +54,6 @@ class TwigHeroiconExtensionTest extends TestCase
         $this->assertStringContainsString($typeStringSpecific, $svg);
     }
 
-    #[DataProvider(methodName: 'getTypeAndSizes')]
-    #[Test]
     /**
      * @test
      * @dataProvider getTypeAndSizes

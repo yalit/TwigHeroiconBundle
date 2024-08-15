@@ -11,6 +11,10 @@ class WebpackHeroiconGetterTest extends TestCase
 {
     #[DataProvider(methodName: 'getTypeAndSizes')]
     #[Test]
+    /**
+     * @test
+     * @dataProvider getTypeAndSizes
+     */
     public function successfulGetHeroiconWithNoClassName(string $type, string $size): void
     {
         $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public');
@@ -24,6 +28,10 @@ class WebpackHeroiconGetterTest extends TestCase
 
     #[DataProvider(methodName: 'getTypeAndSizes')]
     #[Test]
+    /**
+     * @test
+     * @dataProvider getTypeAndSizes
+     */
     public function successfulGetHeroiconWithClassName(string $type, string $size): void
     {
         $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public');

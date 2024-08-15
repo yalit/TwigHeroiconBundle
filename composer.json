@@ -4,6 +4,7 @@
   "type": "symfony-bundle",
   "license": "MIT",
   "require": {
+    "php": "^8",
     "twig/twig": "^2.12|^3.0"
   },
   "autoload": {
@@ -17,6 +18,6 @@
     }
   },
   "require-dev": {
-    "phpunit/phpunit": "^11.3"
+    "phpunit/phpunit": "^9.0"
   }
 }

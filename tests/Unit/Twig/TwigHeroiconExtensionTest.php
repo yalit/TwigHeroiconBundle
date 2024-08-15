@@ -12,6 +12,7 @@ use Yalit\TwigHeroiconBundle\Twig\TwigHeroiconExtension;
 class TwigHeroiconExtensionTest extends TestCase
 {
     #[Test]
+    /** @test */
     public function successfulGetHeroiconWithOnlyName(): void
     {
         $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public');
@@ -24,6 +25,10 @@ class TwigHeroiconExtensionTest extends TestCase
 
     #[DataProvider(methodName: 'getTypeAndSizes')]
     #[Test]
+    /**
+     * @test
+     * @dataProvider getTypeAndSizes
+     */
     public function successfulGetHeroiconWithNameAndType(string $type, string $size): void
     {
         $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public');
@@ -38,6 +43,10 @@ class TwigHeroiconExtensionTest extends TestCase
 
     #[DataProvider(methodName: 'getTypeAndSizes')]
     #[Test]
+    /**
+     * @test
+     * @dataProvider getTypeAndSizes
+     */
     public function successfulGetHeroiconWithNameAndTypeAndSizes(string $type, string $size): void
     {
         $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public');
@@ -52,6 +61,10 @@ class TwigHeroiconExtensionTest extends TestCase
 
     #[DataProvider(methodName: 'getTypeAndSizes')]
     #[Test]
+    /**
+     * @test
+     * @dataProvider getTypeAndSizes
+     */
     public function successfulGetHeroiconWithNameAndTypeAndSizesWithClassName(string $type, string $size): void
     {
         $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public');

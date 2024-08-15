@@ -1,7 +1,9 @@
 services:
-  _defaults:
-    bind:
-      $twigHeroiconPublicDir: "%kernel.project_dir%/public"
+
+  yalit.heroicon.getter.webpack: 
+    class: Yalit\TwigHeroiconBundle\Services\WebpackHeroiconGetter 
+    arguments: ['%kernel.project_dir%/public']
 
   Yalit\TwigHeroiconBundle\Twig\TwigHeroiconExtension:
+    arguments: ['@yalit.heroicon.getter.webpack']
     tags: ["twig.extension"]

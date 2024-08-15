@@ -10,5 +10,13 @@
     "psr-4": {
       "Yalit\\TwigHeroiconBundle\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Yalit\\TwigHeroiconBundle\\Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^11.3"
   }
 }

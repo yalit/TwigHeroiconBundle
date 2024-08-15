@@ -1,34 +1,35 @@
 const fs = require("fs");
 const path = require("path");
-const getFiles = require("./getFiles");
+const TwigHeroiconDataGetter = require("./twigHeroiconDataGetter");
 
 const pluginName = "TwigHeroiconPlugin";
 const buildPath = "heroicons";
 
 const defaultOpts = {
     templatePaths: ["templates"], // list of the paths of the root folders of the templates to look for
-    importType: "twig", // can be twig | specific | all-<all|16|20|24>-<all|solid|outline>
     defaultSize: "24", // can be 16 | 20 | 24
     defaultDisplayType: "outline", // can be solid | outline (only for size 24)
     importedHeroicons: [], // list of names of heroicons if importType is specific => defaultSize and defaultDisplayType will be used
+    importType: 'twig', // can be 'twig' when looking heroicon(<icon-name>,...) into twig files or 'specific' if need to load specific icons and 'both' for both
+    importedHeroicons: [] // used in combination with 'specific' importType => can be just an icon name (and the defaultSize and defaultDisplayType will be used) or an object like {name: string , displayType: string, size: string}
 };
 
 class TwigHeroiconPlugin {
     templatePaths;
     nodePath = "node_modules"
-    importType;
     defaultSize;
     defaultDisplayType;
     importedHeroicons;
+    importType;
 
     constructor(opts = {}) {
         this.templatePaths = opts.templatePaths ?? defaultOpts.templatePaths;
-        this.importType = opts.importType ?? defaultOpts.importType;
         this.defaultSize = opts.importSize ?? defaultOpts.defaultSize;
         this.defaultDisplayType =
             opts.importDisplayType ?? defaultOpts.defaultDisplayType;
         this.importedHeroicons =
             opts.importedHeroicons ?? defaultOpts.importedHeroicons;
+        this.importType = opts.importType ?? defaultOpts.importType;
     }
 
     apply(compiler) {
@@ -58,61 +59,40 @@ class TwigHeroiconPlugin {
                         );
                     };
 
-                    const heroicons = new Set();
-                    getFiles(
-                        path.join(compiler.context, this.templatePaths[0]),
-                        "twig",
-                    ).forEach((file) => {
-                            const fileContent = fs.readFileSync(file, "utf8");
-                            const heroiconsData = this.getHeroiconData(fileContent);
-
-                            heroiconsData.forEach((data) => {
-                                if (heroicons.has(data.id)) {
-                                    return;
+                    let heroiconsData = []
+                    if (this.importType === 'twig' || this.importType === 'both'){
+                        heroiconsData = [...heroiconsData, ...(new TwigHeroiconDataGetter()).getHeroiconTwigData(this.templatePaths.map(p => path.join(compiler.context, p)), this.defaultDisplayType, this.defaultSize)]
+                    } if (this.importType === 'specific' || this.importType === 'both'){
+                        this.importedHeroicons.forEach(iconData => {
+                            if (typeof iconData === 'string') {
+                                let iconDataDefaulted = {name: iconData, displayType: this.defaultDisplayType, size: this.defaultSize}
+                                if (heroiconsData.indexOf(iconDataDefaulted) < 0) {
+                                    heroiconsData.includes(iconDataDefaulted)
                                 }
+                            } 
 
-                                let svgContent = fs.readFileSync(
-                                    getHeroiconFilePath(data.name, data.size, data.displayType),
-                                    "utf-8",
-                                );
-                                compilation.emitAsset(
-                                    path.join(buildPath, data.id + ".svg"),
-                                    new sources.RawSource(svgContent),
-                                );
-
-                                heroicons.add(data.id);
-                            });
+                            if (typeof iconData === 'object' && 'name' in iconData && 'displayType' in iconData && 'size' in iconData ) {
+                                if (heroiconsData.indexOf(iconData) < 0){
+                                    heroiconsData.push(iconData)
+                                }
+                            } 
                         });
+                    }
+
+                    heroiconsData.forEach(data => {
+                        let svgContent = fs.readFileSync(
+                            getHeroiconFilePath(data.name, data.size, data.displayType),
+                            "utf-8",
+                        );
+                        compilation.emitAsset(
+                            path.join(buildPath, [data.name, data.displayType, data.size].join("-") + ".svg"),
+                            new sources.RawSource(svgContent),
+                        );
+
+                    })
                 },
             );
         });
-    }
-
-    /**
-   * @return {id:string, name: string, displayType: string, size: string}[]
-   **/
-    getHeroiconData(fileContent) {
-        const regex = /heroicon\( *('[^)]+') *\)/g;
-        const heroicons = fileContent.matchAll(regex);
-
-        const heroiconsData = [];
-        heroicons.forEach((heroicon) => {
-            let [name, displayType, size, _] = heroicon[1]
-            .replace(/'/g, "")
-            .split(",")
-            .map((e) => e.trim());
-
-            displayType = displayType !== "" ? displayType : this.defaultDisplayType;
-            size = size !== "" ? size : this.defaultSize;
-            heroiconsData.push({
-                id: [name, displayType, size].join("-"),
-                name,
-                displayType,
-                size,
-            });
-        });
-
-        return heroiconsData;
     }
 }
 

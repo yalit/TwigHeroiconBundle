@@ -1,21 +1,21 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace Yalit\TwigHeroiconBundle\Tests\Unit\Services;
+namespace Services;
 
 use PHPUnit\Framework\TestCase;
 use Yalit\TwigHeroiconBundle\Services\Enum\HeroiconSize;
 use Yalit\TwigHeroiconBundle\Services\Enum\HeroiconType;
-use Yalit\TwigHeroiconBundle\Services\WebpackHeroiconGetter;
+use Yalit\TwigHeroiconBundle\Services\NodeHeroiconGetter;
 
-class WebpackHeroiconGetterTest extends TestCase
+class NodeHeroiconGetterTest extends TestCase
 {
     /**
-     * @test
      * @dataProvider getTypeAndSizes
+     * @test
      */
-    public function successfulGetHeroiconWithNoClassName(string $type, string $size): void
+    public function successfulWithNoClassName(string $type, string $size): void
     {
-        $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public');
+        $heroiconGetter = new NodeHeroiconGetter(getcwd().'/tests');
 
         $svg = $heroiconGetter->getHeroicon('test', HeroiconType::from($type), HeroiconSize::from($size), '');
         $this->assertStringContainsString(sprintf('viewBox="0 0 %s %s"', $size, $size), $svg);
@@ -25,15 +25,14 @@ class WebpackHeroiconGetterTest extends TestCase
     }
 
     /**
-     * @test
      * @dataProvider getTypeAndSizes
+     * @test
      */
-    public function successfulGetHeroiconWithClassName(string $type, string $size): void
+    public function successfulWithClassName(string $type, string $size): void
     {
-        $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public');
+        $heroiconGetter = new NodeHeroiconGetter(getcwd().'/tests');
 
         $className = 'icon h-4 w-4 rounded stroke-blue-800';
-
         $svg = $heroiconGetter->getHeroicon('test', HeroiconType::from($type), HeroiconSize::from($size), $className);
         $this->assertStringContainsString(sprintf('viewBox="0 0 %s %s"', $size, $size), $svg);
 
@@ -43,7 +42,7 @@ class WebpackHeroiconGetterTest extends TestCase
         $this->assertStringContainsString(sprintf('class="%s"', $className), $svg);
     }
 
-/**
+    /**
      * @return iterable<array<string,string>>
      */
     public static function getTypeAndSizes(): iterable

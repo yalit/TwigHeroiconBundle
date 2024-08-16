@@ -12,7 +12,6 @@ class TwigHeroiconExtension extends AbstractExtension
 {
     public function __construct(
         private readonly HeroiconGetterInterface $heroiconGetter,
-        private readonly bool $withWebpack = true,
         private readonly string $defaultDisplayType = 'outline',
         private readonly string $defaultSize = '24'
     ) {}

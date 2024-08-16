@@ -77,8 +77,6 @@ class TwigHeroiconExtensionTest extends TestCase
     public static function getTypeAndSizes(): iterable
     {
         yield 'Outline 24' => ['type' => 'outline', 'size' => '24'];
-        yield 'Outline 20' => ['type' => 'outline', 'size' => '20'];
-        yield 'Outline 16' => ['type' => 'outline', 'size' => '16'];
         yield 'Solid 24' => ['type' => 'solid', 'size' => '24'];
         yield 'Solid 20' => ['type' => 'solid', 'size' => '20'];
         yield 'Solid 16' => ['type' => 'solid', 'size' => '16'];

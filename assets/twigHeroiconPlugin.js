@@ -9,7 +9,6 @@ const defaultOpts = {
     templatePaths: ["templates"], // list of the paths of the root folders of the templates to look for
     defaultSize: "24", // can be 16 | 20 | 24
     defaultDisplayType: "outline", // can be solid | outline (only for size 24)
-    importedHeroicons: [], // list of names of heroicons if importType is specific => defaultSize and defaultDisplayType will be used
     importType: 'twig', // can be 'twig' when looking heroicon(<icon-name>,...) into twig files or 'specific' if need to load specific icons and 'both' for both
     importedHeroicons: [] // used in combination with 'specific' importType => can be just an icon name (and the defaultSize and defaultDisplayType will be used) or an object like {name: string , displayType: string, size: string}
 };

@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   php8.1:
     container_name: php_8.1
@@ -12,8 +12,18 @@ services:
       context: ./docker/php/8.2
     volumes:
       - .:/var/www/html
-  server:
+  server-18:
     build:
-      context: docker/node
+      context: docker/node/18
     volumes:
-    - .:/usr/src/app
+      - .:/usr/src/app
+  server-20:
+    build:
+      context: docker/node/20
+    volumes:
+      - .:/usr/src/app
+  server-22:
+    build:
+      context: docker/node/22
+    volumes:
+      - .:/usr/src/app

@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const TwigHeroiconDataGetter = require("./twigHeroiconDataGetter");
+const SpecificHeroiconDataGetter = require("./specificHeroiconDataGetter");
 
 const pluginName = "TwigHeroiconPlugin";
 const buildPath = "heroicons";
@@ -58,27 +59,7 @@ class TwigHeroiconPlugin {
                         );
                     };
 
-                    let heroiconsData = []
-                    if (this.importType === 'twig' || this.importType === 'both'){
-                        heroiconsData = [...heroiconsData, ...(new TwigHeroiconDataGetter()).getHeroiconTwigData(this.templatePaths.map(p => path.join(compiler.context, p)), this.defaultDisplayType, this.defaultSize)]
-                    } if (this.importType === 'specific' || this.importType === 'both'){
-                        this.importedHeroicons.forEach(iconData => {
-                            if (typeof iconData === 'string') {
-                                let iconDataDefaulted = {name: iconData, displayType: this.defaultDisplayType, size: this.defaultSize}
-                                if (heroiconsData.indexOf(iconDataDefaulted) < 0) {
-                                    heroiconsData.includes(iconDataDefaulted)
-                                }
-                            } 
-
-                            if (typeof iconData === 'object' && 'name' in iconData && 'displayType' in iconData && 'size' in iconData ) {
-                                if (heroiconsData.indexOf(iconData) < 0){
-                                    heroiconsData.push(iconData)
-                                }
-                            } 
-                        });
-                    }
-
-                    heroiconsData.forEach(data => {
+                    this.getHeroiconsData(compiler.context).forEach(data => {
                         let svgContent = fs.readFileSync(
                             getHeroiconFilePath(data.name, data.size, data.displayType),
                             "utf-8",
@@ -92,6 +73,21 @@ class TwigHeroiconPlugin {
                 },
             );
         });
+    }
+
+    /**
+     * @return {name: string, displayType: string, size: string}[]
+     */
+    getHeroiconsData(rootDir) {
+        let heroiconsData = []
+        if (this.importType === 'twig' || this.importType === 'both') {
+            heroiconsData = [...heroiconsData, ...(new TwigHeroiconDataGetter()).getHeroiconsData(this.templatePaths.map(p => path.join(rootDir, p)), this.defaultDisplayType, this.defaultSize)]
+        }
+        if (this.importType === 'specific' || this.importType === 'both') {
+            const specificHeroiconsData = (new SpecificHeroiconDataGetter()).getHeroiconsData(this.importedHeroicons, this.defaultDisplayType, this.defaultSize)
+        }
+
+        return heroiconsData
     }
 }
 

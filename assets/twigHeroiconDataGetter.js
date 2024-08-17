@@ -6,9 +6,9 @@ class TwigHeroiconDataGetter
     /**
     * @return {name: string, displayType: string, size: string}[]
     */
-    getHeroiconTwigData(templatePaths, defaultDisplayType = 'outline', defaultSize = '24'){
+    getHeroiconsData(templatePaths, defaultDisplayType = 'outline', defaultSize = '24'){
         const heroicons = new Set();
-        const heroiconsFileData = [];
+        const heroiconsData = [];
         templatePaths.forEach(p => {
             this.getFiles(p).forEach((file) => {
                     const fileContent = fs.readFileSync(file, "utf8");
@@ -20,12 +20,12 @@ class TwigHeroiconDataGetter
                         }
 
                         heroicons.add(data.id);
-                        heroiconsFileData.push({name: data.name, displayType: data.displayType, size: data.size})
+                        heroiconsData.push({name: data.name, displayType: data.displayType, size: data.size})
                     });
                 });
         });
 
-        return heroiconsFileData
+        return heroiconsData
     }
 
     /**

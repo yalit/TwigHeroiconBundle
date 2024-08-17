@@ -1,0 +1,25 @@
+{
+  "name": "twigheroiconbundle",
+  "version": "1.0.0",
+  "description": "Bundle to fetch icons from heroicons library",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:yalit/TwigHeroiconBundle.git"
+  },
+  "author": "Yannick Alsberge (Yalit)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yalit/TwigHeroiconBundle/issues"
+  },
+  "homepage": "https://github.com/yalit/TwigHeroiconBundle#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

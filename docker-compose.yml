@@ -12,4 +12,8 @@ services:
       context: ./docker/php/8.2
     volumes:
       - .:/var/www/html
-
+  server:
+    build:
+      context: docker/node
+    volumes:
+    - .:/usr/src/app

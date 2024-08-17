@@ -1,0 +1,56 @@
+name: PHP Composer
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  symfony:
+    name: Symfony (PHP ${{ matrix.php-versions }})
+    # https://hub.docker.com/_/ubuntu/
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: true
+      matrix:
+        php-versions: ['8.1', '8.2']
+    steps:
+      # —— Setup Github actions 🐙 —————————————————————————————————————————————
+      # https://github.com/actions/checkout (official)
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # https://github.com/shivammathur/setup-php (community)
+      - name: Setup PHP, extensions and composer with shivammathur/setup-php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, xml, ctype, iconv, intl, pdo, pdo_mysql, dom, filter, gd, iconv, json, mbstring
+        env:
+          update: true
+
+      - name: Check PHP Version
+        run: php -v
+
+      # —— Composer 🧙‍️ —————————————————————————————————————————————————————————
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install
+      
+      # —— Tests ✅ ———————————————————————————————————————————————————————————
+      - name: Run functionnal and unit tests
+        run: ./vendor/bin/phpunit tests

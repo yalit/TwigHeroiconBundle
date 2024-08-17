@@ -36,4 +36,4 @@ tests-back: test-8.1 test-8.2
 tests-front:
 	${DOCKER_COMPOSE} run server npm test
 
-tests: tests-back test-front
+tests: tests-back tests-front

@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php-versions: ['8.1', '8.2']
+        php-versions: ['7.4', '8.1', '8.2']
     steps:
       # —— Setup Github actions 🐙 —————————————————————————————————————————————
       # https://github.com/actions/checkout (official)
@@ -49,7 +49,7 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
-        run: make install
+        run: composer install
       
       # —— Tests ✅ ———————————————————————————————————————————————————————————
       - name: Run functionnal and unit tests

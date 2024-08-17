@@ -14,7 +14,7 @@ class TwigHeroiconExtensionTest extends TestCase
      */
     public function successfulGetHeroiconWithOnlyName(): void
     {
-        $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public');
+        $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public/build');
         $twigExtension = new TwigHeroiconExtension($heroiconGetter);
 
         $svg = $twigExtension->getHeroicon('test');
@@ -28,7 +28,7 @@ class TwigHeroiconExtensionTest extends TestCase
      */
     public function successfulGetHeroiconWithNameAndType(string $type, string $size): void
     {
-        $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public');
+        $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public/build');
         $twigExtension = new TwigHeroiconExtension($heroiconGetter);
 
         $svg = $twigExtension->getHeroicon('test', $type);
@@ -44,7 +44,7 @@ class TwigHeroiconExtensionTest extends TestCase
      */
     public function successfulGetHeroiconWithNameAndTypeAndSizes(string $type, string $size): void
     {
-        $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public');
+        $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public/build');
         $twigExtension = new TwigHeroiconExtension($heroiconGetter);
 
         $svg = $twigExtension->getHeroicon('test', $type, $size);
@@ -60,7 +60,7 @@ class TwigHeroiconExtensionTest extends TestCase
      */
     public function successfulGetHeroiconWithNameAndTypeAndSizesWithClassName(string $type, string $size): void
     {
-        $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public');
+        $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public/build');
         $twigExtension = new TwigHeroiconExtension($heroiconGetter);
 
         $className = 'icon h-4 w-4 rounded stroke-blue-800';

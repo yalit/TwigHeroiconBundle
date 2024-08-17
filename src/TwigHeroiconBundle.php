@@ -16,29 +16,28 @@ class TwigHeroiconBundle extends AbstractBundle
     {
         $definition
             ->rootNode()
-            ->children()
-            ->scalarNode('source')
-            ->defaultValue('node')
-            ->end()
-            ->scalarNode('default_display_type')
-            ->defaultValue('outline')
-            ->end()
-            ->scalarNode('default_size')
-            ->defaultValue('24')
-            ->end()
+                ->children()
+                    ->scalarNode('default_display_type')->defaultValue('outline')->end()
+                    ->scalarNode('default_size')->defaultValue('24')->end()
+                    ->arrayNode('webpack')
+                        ->canBeEnabled()
+                        ->children()
+                            ->scalarNode('build_dir')->defaultValue('public/build')->end()
+                        ->end()
+                ->end()
             ->end();
     }
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
         // set the getters
-        $container->services()->set('yalit.heroicon.getter.webpack', WebpackHeroiconGetter::class)->arg(0, $builder->getParameter('kernel.project_dir') . '/public');
+        $container->services()->set('yalit.heroicon.getter.webpack', WebpackHeroiconGetter::class)->arg(0, $builder->getParameter('kernel.project_dir') . '/' . $config['webpack']['build_dir']);
         $container->services()->set('yalit.heroicon.getter.node', NodeHeroiconGetter::class)->arg(0, $builder->getParameter('kernel.project_dir'));
 
         // define which getter to use
-        $heroiconGetterId = match($config['source']) {
-            'webpack' => 'yalit.heroicon.getter.webpack',
-            'node' => 'yalit.heroicon.getter.node',
+        $heroiconGetterId = match ($config['webpack']['enabled']) {
+            true => 'yalit.heroicon.getter.webpack',
+            false => 'yalit.heroicon.getter.node',
         };
         $heroiconGetter = $builder->getDefinition($heroiconGetterId);
 
@@ -49,7 +48,6 @@ class TwigHeroiconBundle extends AbstractBundle
             ->arg(0, $heroiconGetter)
             ->arg(1, $config['default_display_type'])
             ->arg(2, $config['default_size'])
-            ->tag('twig.extension')
-        ;
+            ->tag('twig.extension');
     }
 }

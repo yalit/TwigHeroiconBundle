@@ -15,7 +15,7 @@ class WebpackHeroiconGetterTest extends TestCase
      */
     public function successfulGetHeroiconWithNoClassName(string $type, string $size): void
     {
-        $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public');
+        $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public/build');
 
         $svg = $heroiconGetter->getHeroicon('test', HeroiconType::from($type), HeroiconSize::from($size), '');
         $this->assertStringContainsString(sprintf('viewBox="0 0 %s %s"', $size, $size), $svg);
@@ -30,7 +30,7 @@ class WebpackHeroiconGetterTest extends TestCase
      */
     public function successfulGetHeroiconWithClassName(string $type, string $size): void
     {
-        $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public');
+        $heroiconGetter = new WebpackHeroiconGetter(getcwd() . '/tests/public/build');
 
         $className = 'icon h-4 w-4 rounded stroke-blue-800';
 
@@ -43,7 +43,7 @@ class WebpackHeroiconGetterTest extends TestCase
         $this->assertStringContainsString(sprintf('class="%s"', $className), $svg);
     }
 
-/**
+    /**
      * @return iterable<array<string,string>>
      */
     public static function getTypeAndSizes(): iterable

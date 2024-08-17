@@ -51,21 +51,24 @@ Here is an example of how to use the function:
 ## Configuration
 ### Default Configuration
 The bundle can be configured to change:
-- the source of the svg icons
-  - the possible values are 'node' and 'webpack' (see below [Webpack Configuration](#webpack-configuration))
 - the default display type of the icons
   - this value is used if no `type` is provided in the `heroicon` function
   - the possible values are 'outline' and 'solid'
 - the default size of the icons
   - this value is used if no `size` is provided in the `heroicon` function
   - the possible values are '24', '20', '16' (see above for the possible combination with the types)
+- the webpack configuration
+  - if you want to use the webpack build to get the icons from the build folder
+  - the build folder is by default 'public/build'
 
 Here is the default configuration of the bundle:
 ```yaml
 twig_heroicon:
-    source: 'node'
     default_display_type: 'outline'
     default_size: '24'
+    webpack:
+      enabled: false
+      build_dir: 'public/build'
 ```
 
 ### Webpack Configuration
@@ -129,6 +132,8 @@ These options can be passed to the plugin in the `addPlugin` function like this:
     ]    
 }))
 ```
+
+**Note¨¨: if you change the build dir in the webpack configuration, you need to change the `build_dir` in the bundle webpack configuration to the same value (see [above](#default-configuration).
 
 **Note** : if the webpack configuration is used, you can install the tailwindlabs/heroicons package as a dev dependency:
 ```bash
